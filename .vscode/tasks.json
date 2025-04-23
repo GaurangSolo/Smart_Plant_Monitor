@@ -1,0 +1,20 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Flash XIAO with UF2",
+            "type": "shell",
+            "command": "west",
+            "args": [
+                "flash",
+                "--runner",
+                "uf2",
+                "--build-dir",
+                "${workspaceFolder}/build"
+            ],
+            "problemMatcher": [],
+            "group": "build",
+            "detail": "Flashes the XIAO nRF52840 board using 'west flash --runner uf2'. Requires board in UF2 bootloader mode (double-press reset)."
+        }
+    ]
+}

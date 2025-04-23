@@ -1,0 +1,43 @@
+/* Smart Plant Monitor Overlay for xiao_ble */
+
+/* Define the pin control configuration for I2C0 */
+/* This block defines pin settings for different peripheral states (e.g., "default", "sleep") */
+&pinctrl {
+    /* Defines pin configuration for the 'default' state of i2c0 */
+    i2c0_default: i2c0_default {
+        group1 {
+            /* Assigns physical pins P0.26 (XIAO D4/SDA) and P0.27 (XIAO D5/SCL) */
+            psels = <NRF_PSEL(TWIM_SDA, 0, 26)>,
+                    <NRF_PSEL(TWIM_SCL, 0, 27)>;
+            /* Optional but recommended: Enable internal pull-ups. */
+            /* Most BME280 modules have them, but enabling internal doesn't hurt. */
+            bias-pull-up;
+        };
+    };
+
+    /* You could define other states like sleep here if needed */
+    /* i2c0_sleep: i2c0_sleep { ... }; */
+};
+
+/* Enable I2C0 and assign the defined pin control state(s) */
+&i2c0 {
+    compatible = "nordic,nrf-twim"; /* Good practice to include when modifying */
+    status = "okay"; /* Enable the I2C0 peripheral */
+
+    /* --- These lines fix the error --- */
+    pinctrl-0 = <&i2c0_default>;   /* Link the 'default' state to the i2c0_default pin config */
+    pinctrl-names = "default";     /* Name the state being configured */
+    /* If you had an i2c0_sleep state, you'd add: */
+    // pinctrl-1 = <&i2c0_sleep>;
+    // pinctrl-names = "default", "sleep";
+    /* --- End of fix --- */
+
+
+    /* Define the BME280 sensor on the bus */
+    /* Note: Change '@77' and 'reg = <0x77>' to '@76' and '<0x76>'
+       if your specific BME280 module uses address 0x76 */
+    bme280@77 {
+        compatible = "bosch,bme280";
+        reg = <0x77>; // The I2C address (0x77)
+    };
+};
