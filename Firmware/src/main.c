@@ -8,11 +8,13 @@
 #include <stdbool.h> // Used for boolean type
 
 /* --- BME280 Setup --- */
+
 // Get the device pointer from the devicetree node defined in the overlay
 #define BME280_NODE DT_COMPAT_GET_ANY_STATUS_OKAY(bosch_bme280)
 static const struct device *bme280_dev = DEVICE_DT_GET(BME280_NODE);
 
 /* --- LED Setup (Using Blue LED - led2) --- */
+
 // Use the alias "led2" defined for the board (Blue LED on XIAO - P0.06)
 #define LED_NODE DT_ALIAS(led2)
 #if DT_NODE_HAS_STATUS(LED_NODE, okay)
